@@ -1,5 +1,6 @@
 import pygame
 import os
+import sys
 from pathlib import Path
 
 # ==========================================
@@ -12,11 +13,15 @@ class SoundManager:
         try:
             pygame.mixer.init()
             
-            script_dir = Path(__file__).parent
-            sound_path = script_dir / ".." / ".." / "assets" / sound_file
-            absolute_sound_path = sound_path.resolve()
-            if os.path.exists(absolute_sound_path):
-                self.nudge_sound = pygame.mixer.Sound(absolute_sound_path)
+            # Detect if running as executable or script
+            if getattr(sys, 'frozen', False):
+                base_dir = sys._MEIPASS
+            else:
+                base_dir = Path(__file__).parent.parent.parent
+            
+            sound_path = Path(base_dir) / "assets" / sound_file
+            if os.path.exists(sound_path):
+                self.nudge_sound = pygame.mixer.Sound(str(sound_path))
                 self.music_enabled = True
             else:
                 print(f"Warning: {sound_file} not found. Audio disabled.")

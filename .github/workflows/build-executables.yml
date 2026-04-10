@@ -1,0 +1,70 @@
+name: Build Desktop Executables
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write 
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-22.04]
+    
+    runs-on: ${{ matrix.os }}
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: pip install -r gui/requirements.txt
+
+      # -----------------------------------------------------
+      # WINDOWS: Build with PyInstaller & .ico
+      # -----------------------------------------------------
+      - name: Build with PyInstaller (Windows)
+        if: matrix.os == 'windows-latest'
+        run: |
+          pyinstaller --onefile --windowed --icon=assets/nudger.ico --add-data "assets/funny_alarm.mp3:assets" gui/nudger.py
+
+      # -----------------------------------------------------
+      # MACOS: Build with PyInstaller & .icns
+      # -----------------------------------------------------
+      - name: Build with PyInstaller (macOS)
+        if: matrix.os == 'macos-latest'
+        run: |
+          pyinstaller --name "nudger-mac" --onefile --windowed --icon=assets/nudger.icns --add-data "assets/*.mp3:assets" gui/nudger.py
+
+      # -----------------------------------------------------
+      # LINUX: Build with PyInstaller & .png
+      # -----------------------------------------------------
+      - name: Build with PyInstaller (Linux)
+        if: matrix.os == 'ubuntu-22.04'
+        run: |
+          pyinstaller --name "nudger-nix" --onefile --windowed --icon=assets/nudger.png --add-data "assets/*.mp3:assets" gui/nudger.py
+
+      # -----------------------------------------------------
+      # UPLOAD: Save the outputs as GitHub Artifacts
+      # -----------------------------------------------------
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-executable-${{ matrix.os }}
+          path: dist/
+
+      # -----------------------------------------------------
+      #  Auto-attach to GitHub Releases
+      # -----------------------------------------------------
+      - name: Attach Artifacts to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*

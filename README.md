@@ -1,6 +1,6 @@
 # NUDGE PROTOCOL
 
-A lightweight NUDGE protocol built on UDP, ideal for nudging your buddies in a LAN. This project provides both a command-line and desktop GUI implementation for sending and receiving short, low-latency notifications across a local network.
+A lightweight NUDGE application layer network protocol built on UDP, ideal for nudging your buddies in a LAN. This project provides both a command-line and desktop GUI implementation for sending and receiving short, low-latency notifications across a local network.
 
 ## Table of Contents
 
