@@ -1,5 +1,8 @@
 # NUDGE PROTOCOL
 
+
+<img src="assets/nudger.png" alt="logo"/>
+
 A lightweight NUDGE application layer network protocol built on UDP, ideal for nudging your buddies in a LAN. This project provides both a command-line and desktop GUI implementation for sending and receiving short, low-latency notifications across a local network.
 
 ## Table of Contents
@@ -182,15 +185,3 @@ gui/
 - `gui/nudge/scanner.py`: Discovery request sender and device registration.
 - `gui/helper/alert_window.py`: GUI alerts for errors and notifications.
 - `gui/helper/sound_manager.py`: Audio feedback for incoming nudges.
-
-## Notes
-
-- The protocol is intentionally minimal for LAN use.
-- Broadcast mode uses `255.255.255.255` and requires socket broadcast permissions.
-- The GUI listener binds to `0.0.0.0` to receive incoming packets from any interface.
-- Sender names are ASCII-encoded and appended after the protocol header.
-
-## License
-
-No license file is included in this repository. Use and modify the code according to your own project requirements.
-
