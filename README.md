@@ -80,6 +80,11 @@ The protocol uses UDP on port `7777` by default and defines a binary packet form
 - For `CMD_DISCOVERY_REQ`, the listener responds with `CMD_DISCOVERY_RES` and its device name.
 - For `CMD_DISCOVERY_RES`, the scanner registers the responding device for the GUI device list.
 
+## Download & run executables
+
+Download nudger GUI desktop app executables from the latest release:
+https://github.com/fotioudim/nudge-protocol/releases/latest
+
 ## Installation
 
 ### Requirements
